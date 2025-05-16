@@ -18,13 +18,11 @@ def main():
         mask_image += seg
 
     kernel = np.ones((7, 7))
-    smaller_mask_image = mask_image.copy()
-    smaller_mask_image = cv2.erode(smaller_mask_image, kernel, iterations=5)
-    outline = mask_image != smaller_mask_image
-    outline = outline.astype(np.uint8)
+    smaller_mask_image = cv2.erode(mask_image, kernel, iterations=5)
+    bigger_mask_image = cv2.dilate(mask_image, kernel, iterations=5)
 
-    cv2.imshow("mask", mask_image)
-    cv2.waitKey()
+    outline = bigger_mask_image != smaller_mask_image
+    outline = outline.astype(np.uint8)
 
     mask_image[outline > 0] = 127
 
